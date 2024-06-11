@@ -1,4 +1,3 @@
-# model.py
 import numpy as np
 
 # Como o sólido foi desenhado a mão, deixar os vértices indicados em ordem de desenho

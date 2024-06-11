@@ -1,4 +1,3 @@
-# main.py
 import glfw
 from model import Spacecraft, Ground
 from view import View
