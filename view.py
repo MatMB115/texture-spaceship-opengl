@@ -51,7 +51,7 @@ class View:
         gluPerspective(45, 1280 / 720, 0.1, 50.0)
         glMatrixMode(GL_MODELVIEW)
 
-        glClearColor(0.3, 0.0, 0.7, 0.6)
+        glClearColor(0, 0.0, 0, 0.6)
 
         self.spacecraft_texture_id = self.load_texture(self.spacecraft_texture_path)
         self.ground_texture_id = self.load_texture(self.ground_texture_path)
@@ -125,6 +125,8 @@ class View:
             "J, L: Move câmera esquerda/direita",
             "U, O: Move câmera frente/trás",
             "=, -: Aumenta/diminui escala da nave",
+            "N, M: Aumenta/diminui asa da nave",
+            "V, B: Desce/sobe asa da nave",
         ]
         y = 700  
         for command in commands:
