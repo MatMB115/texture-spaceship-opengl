@@ -80,7 +80,7 @@ As orientações estão divididas nos seguintes tópicos:
 
 ### Etapas
 
-O projeto possui o arquivo -main.py que é responsável por inicializar a aplicação, em conjunto com um pseudo MVC, composto pelos arquivos view.py (responsável por renderizar os componentes, sendo eles o ambiente e a nave), controller.py (responsável por receber as teclas precionadas do teclado e aplicar as transformações ao sólido) e por fim o model.py (onde é definido 2 classes, uma que representa a nave e outra que representa o chão)
+O projeto possui o arquivo -main.py que é responsável por inicializar a aplicação, em conjunto com um pseudo MVC, composto pelos arquivos view.py (responsável por renderizar os componentes, sendo eles o ambiente e a nave), controller.py (responsável por receber as teclas pressionadas do teclado e aplicar as transformações ao sólido) e por fim o model.py (onde é definido 2 classes, uma que representa a nave e outra que representa o chão)
 
 #### Construção da View Nave - Polígono
 
