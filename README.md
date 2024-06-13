@@ -193,7 +193,7 @@ As orientações estão divididas nos seguintes tópicos:
 
   ```
 
-#### Construção da View Chão - Plano 2D (BRUNO)
+#### Construção da View Chão - Plano 2D
 
 - O chão consiste uma matriz que forma um quadrado plano a partir de dois triângulos;
 - O processo de renderização do chão é:
@@ -238,10 +238,25 @@ As orientações estão divididas nos seguintes tópicos:
         glPopMatrix()
   ```
 
-#### Textura do chão (BRUNO)
+#### Textura do chão
 
-**PREENCHER** Explicar que a textura do chão
+- A textura do chão é formada a partir da imagem `space.png`, que é carregada e aplicada objeto
+- É feito um bind da textura com `glBindTexture(GL_TEXTURE_2D, self.ground_texture_id)`
+- O processo de renderização do chão com textura é:
 
+  - Renderização padrão do chão;
+  - Bind de textura;
+  - Renderizar com as coordenadas de textura
+
+  ```python
+    glPushMatrix()
+    glBegin(GL_QUADS)
+    for i, vertex in enumerate(self.ground.vertices):
+        glTexCoord2f((i % 2) + self.ground_texture_offset, (i // 2) + self.ground_texture_offset)
+        glVertex3f(*vertex)
+    glEnd()
+    glPopMatrix()
+  ```
 #### Controles da Nave
 
 **PREENCHER** Só incrementa, subtrai e multiplica valores
