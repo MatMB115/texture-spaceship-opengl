@@ -43,7 +43,7 @@ Explorando o uso de texturas no OpenGL com Python.
 
 ### Sobre :information_source:
 
-O trabalho tem como objetivo fazer o uso das bibliotecas: scikit image, pyopenGL e pygame; para a criação de um sólido de nossa escolha (no nossa caso uma **nave**) para realizar as operações de translação, rotação e escalonamento
+O trabalho tem como objetivo fazer o uso da biblioteca pyopenGL para a criação de um sólido de nossa escolha (no nossa caso uma **nave**) para realizar as operações de translação, rotação e escalonamento
 
 As orientações estão divididas nos seguintes tópicos:
 
