@@ -43,7 +43,7 @@ Explorando o uso de texturas no OpenGL com Python.
 
 ### Sobre :information_source:
 
-**PREENCHER** Descrição do trabalho
+O trabalho tem como objetivo fazer o uso das bibliotecas: scikit image, pyopenGL e pygame; para a criação de um sólido de nossa escolha (no nossa caso uma **nave**) para realizar as operações de translação, rotação e escalonamento
 
 As orientações estão divididas nos seguintes tópicos:
 
@@ -80,7 +80,7 @@ As orientações estão divididas nos seguintes tópicos:
 
 ### Etapas
 
-**PREENCHER** Processos para construção do cenário, pseudo MVC que tá sendo usado e afins
+O projeto possui o arquivo -main.py que é responsável por inicializar a aplicação, em conjunto com um pseudo MVC, composto pelos arquivos view.py (responsável por renderizar os componentes, sendo eles o ambiente e a nave), controller.py (responsável por receber as teclas precionadas do teclado e aplicar as transformações ao sólido) e por fim o model.py (onde é definido 2 classes, uma que representa a nave e outra que representa o chão)
 
 #### Construção da View Nave - Polígono
 
