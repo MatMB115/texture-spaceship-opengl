@@ -80,9 +80,9 @@ As orientações estão divididas nos seguintes tópicos:
 **PREENCHER** Explicar a matriz do polígono da nave (é uma pirâmide de base triangular e as asas são dois triângulos planos)
 #### Textura da Nave MARTINS - TÔ FAZENDO ESSE
 **PREENCHER** Explicar como textura é aplicada
-#### Construção da View Chão - Plano 2D
+#### Construção da View Chão - Plano 2D (BRUNO)
 **PREENCHER** Explicar que chão é uma matriz do plano 2D
-#### Textura do chão
+#### Textura do chão (BRUNO)
 **PREENCHER** Explicar que a textura do chão
 #### Controles da Nave
 **PREENCHER** Só incrementa, subtrai e multiplica valores
