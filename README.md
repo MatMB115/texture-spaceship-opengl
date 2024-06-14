@@ -259,11 +259,135 @@ O projeto possui o arquivo -main.py que é responsável por inicializar a aplica
   ```
 #### Controles da Nave
 
-**PREENCHER** Só incrementa, subtrai e multiplica valores
+O código controlller.py é responsável pela movimentação da nave. através da classe <b>Controller</b>, o método <b>process_input()</b> é responsável por fazer todas as tranformações de escala, rotação e translação do modelo.
 
-#### Animação do chão
+##### Movimentação do Modelo
 
-**PREENCHER** Explicar que a textura do chão é alterada conforme diferença de tempo
+- **W / S / A / D**: Movimentam o modelo para cima, baixo, esquerda e direita, respectivamente, alterando suas coordenadas de transladação no plano XY.
+
+##### Rotação do Modelo
+
+- **Setas Direcionais (↑ / ↓ / ← / →)**: Rotacionam o modelo ao redor dos eixos X e Y. As teclas de setas para cima e para baixo controlam a rotação em torno do eixo X, enquanto as teclas para esquerda e direita controlam a rotação em torno do eixo Y.
+- **Q / E**: Rotacionam o modelo ao redor do eixo Z, com a tecla Q para rotação no sentido anti-horário e a tecla E para rotação no sentido horário.
+
+##### Movimentação da Câmera
+
+- **I / K / J / L / U / O**: Movem a posição da câmera. As teclas I e K controlam o movimento vertical da câmera, J e L controlam o movimento horizontal, e U e O controlam o movimento na profundidade (zoom) da câmera.
+
+##### Escala do Modelo
+
+- **= (igual) / - (traço)**: Aumentam e diminuem a escala do modelo. A tecla = aumenta a escala em todas as direções (x, y, z), enquanto a tecla - diminui a escala, mantendo um valor mínimo de escala de 0.1 para cada eixo.
+
+Este controlador permite uma interação dinâmica com a cena 3D, oferecendo controle sobre o modelo e a visualização através da câmera, facilitando a navegação e manipulação do ambiente virtual criado com OpenGL.
+
+##### Código do controlller.py:
+O código do controller é quem define que ações serão feitas com base na tecla que for pressionada, centralizando todas as ações,assim chamando as funções de rotação, translação ou escala no model ou alterando a posição da câmera na view.
+
+
+
+##### No model:
+As funções abaixo são definidas no model e são responsáveis pela escala, translação e rotação do modelo.
+```
+def translate(self, dx, dy, dz):
+        self.position += np.array([dx, dy, dz], dtype=np.float32)
+
+    def rotate(self, angle, axis):
+        self.rotation += np.array(angle) * np.array(axis)
+
+    def scale(self, sx, sy, sz):
+        self.scale *= np.array([sx, sy, sz], dtype=np.float32)
+
+```
+
+##### Na view:
+Para a movimentaçã oda câmera, a variavel camera_position é alterada.
+```
+class View:
+    def __init__(self, spacecraft, ground, spacecraft_texture_path, ground_texture_path):
+        self.spacecraft = spacecraft
+        self.ground = ground
+        self.spacecraft_texture_path = spacecraft_texture_path
+        self.ground_texture_path = ground_texture_path
+        self.camera_position = [0.0, 2.0, 25.0]
+        self.camera_target = [0.0, 0.0, 0.0]
+        self.camera_up = [0.0, 1.0, 0.0]
+        self.spacecraft_texture_id = None
+        self.ground_texture_id = None
+        self.ground_texture_offset = 0.0
+```
+___
+
+#### Animação do Chão
+
+Para fazer a animação do chão, foi se utilizado uma estratégia utilizando o tempo, conforme o tempo passa a textura é renderizada em uma posição, dessa maneira dando a impressao de que o chão, no caso as estrelas, estão se movendo.
+
+##### Função update_ground_texture_offset
+
+A função `update_ground_texture_offset(self, delta_time)` é responsável por atualizar o deslocamento da textura do chão ao longo do tempo. Ela recebe `delta_time`, que representa o tempo decorrido desde a última atualização, e utiliza esse valor para calcular o novo deslocamento da textura:
+
+```python
+def update_ground_texture_offset(self, delta_time):
+    self.ground_texture_offset += delta_time * 0.01  # velocidade animação do chão
+```
+
+A variável self.ground_texture_offset armazena a posição atual da textura do chão. Multiplicando delta_time por 0.01, a função define a velocidade da animação do chão.
+
+##### Função render_ground
+
+A função render_ground(self) desenha o chão na cena utilizando OpenGL. Ela vincula a textura do chão (self.ground_texture_id) e utiliza self.ground_texture_offset para aplicar o deslocamento na textura:
+
+```
+def render_ground(self):
+    glBindTexture(GL_TEXTURE_2D, self.ground_texture_id)
+    glPushMatrix()
+    glBegin(GL_QUADS)
+    for i, vertex in enumerate(self.ground.vertices):
+        glTexCoord2f((i % 2) + self.ground_texture_offset, (i // 2) + self.ground_texture_offset)
+        glVertex3f(*vertex)
+    glEnd()
+    glPopMatrix()
+```
+`glBindTexture(GL_TEXTURE_2D, self.ground_texture_id)`: Vincula a textura do chão para uso.
+
+`glTexCoord2f((i % 2) + self.ground_texture_offset, (i // 2) + self.ground_texture_offset)`: Define as coordenadas de textura para cada vértice do chão, aplicando o deslocamento (self.ground_texture_offset) para criar a ilusão de movimento da textura.
+
+
+##### Função render
+A função render(self) é o ponto de entrada para renderizar a cena completa. Ela é chamada repetidamente para atualizar e desenhar todos os elementos na janela OpenGL:
+
+```
+def render(self):
+    current_time = time.time()
+    if not hasattr(self, 'last_time'):
+        self.last_time = current_time
+    delta_time = current_time - self.last_time
+    self.last_time = current_time
+
+    self.update_ground_texture_offset(delta_time)
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glLoadIdentity()
+    gluLookAt(
+        self.camera_position[0], self.camera_position[1], self.camera_position[2],
+        self.camera_target[0], self.camera_target[1], self.camera_target[2],
+        self.camera_up[0], self.camera_up[1], self.camera_up[2]
+    )
+
+    self.render_ground()
+    self.render_spacecraft()
+    self.render_commands()
+
+    glfw.swap_buffers(self.window)
+```
+
+`self.update_ground_texture_offset(delta_time)`: Chama a função de atualização para mover a textura do chão com base no tempo decorrido desde o último quadro (delta_time).
+
+`self.render_ground()`: Renderiza o chão na posição atualizada, aplicando o deslocamento da textura conforme calculado em update_ground_texture_offset.
+
+`glfw.swap_buffers(self.window)`: Troca os buffers para exibir a cena renderizada na janela.
+
+Essas funções trabalham juntas para criar uma animação contínua e fluida da textura do chão, proporcionando um efeito visual dinâmico à cena 3D renderizada com OpenGL.
+
 
 ### Configuração de ambiente
 
